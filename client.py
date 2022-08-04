@@ -63,6 +63,8 @@ def informacoes():
     tempo = time.perf_counter()
     main(cruzamento)
     while msg:
+        if sys.argv[1] == '1':
+            send("limpa")
         send("=============")
         send(f"CRUZAMENTO {sys.argv[1]}")
         send(f"Fluxo de trânsito nas via principal: {qtd_carro_min(tempo)}Carros/min")
@@ -70,7 +72,7 @@ def informacoes():
         send(f"Número de infrações por avanço de sinal: {qtd_infracao_avanco()}")
         send(f"Número de infrações por velocidade acima da permitida: {qtd_infracao_velocidade()}")
         send("=============")
-        time.sleep(10)
+        time.sleep(3)
 
     
 

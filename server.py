@@ -1,6 +1,7 @@
 import socket 
 import threading
 import sys
+import os
 
 HEADER = 128
 PORT = 10211
@@ -12,6 +13,7 @@ FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DISCONNECT"
 cruzamentos = []
 count_cruzamentos = 0
+print_cruzamentos = False
 
 # server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 server = socket.socket()
@@ -41,6 +43,7 @@ def emergencia_2(n):
             cruzamentos[i].sendall(f"{n}".encode(FORMAT))
 
 def send_handle_client(conn, addr):
+    global print_cruzamentos
     while True:
         entrada = input()
         if entrada == '0' or entrada == '1':
@@ -49,6 +52,17 @@ def send_handle_client(conn, addr):
             emergencia_1(entrada)
         elif entrada == '4' or entrada == '5':
             emergencia_2(entrada)
+        elif entrada == '6':
+            print_cruzamentos = True
+        elif entrada == '7':
+            os.system('cls' if os.name == 'nt' else 'clear')
+            print('Digite 0 para ligar modo noturno\nDigite 1 para desligar modo noturno')
+            print('Digite 2 para ligar modo emergencia cruzamento 1 e 2\nDigite 3 para desligar modo emergencia cruzamento 1 e 2')
+            print('Digite 4 para ligar modo emergencia cruzamento 3 e 4\nDigite 5 para desligar modo emergencia cruzamento 3 e 4')
+            print('Digite 6 para mostra as informacoes dos cruzamentos\nDigite 7 para não mostra as informacoes dos cruzamentos: ')
+        
+            print_cruzamentos = False
+
 
 
 def handle_client(conn, addr):
@@ -63,8 +77,11 @@ def handle_client(conn, addr):
             msg = conn.recv(msg_length).decode(FORMAT)
             if msg == DISCONNECT_MESSAGE:
                 connected = False
-
-            print(f"{msg}")
+            if print_cruzamentos:
+                if msg == 'limpa':
+                    os.system('cls' if os.name == 'nt' else 'clear')
+                else:
+                    print(f"{msg}")
             # print(f"[{addr}] {msg}")
             # conn.send("Msg received".encode(FORMAT))
 
@@ -88,6 +105,9 @@ def start():
 
 
 # print("[STARTING] server is starting...")
-print('Digite 0 para ligar modo noturno\nDigite 1 para desligar modo noturno\nDigite 2 para ligar modo emergencia cruzamento 1 e 2\nDigite 3 para desligar modo emergencia cruzamento 1 e 2\nDigite 4 para ligar modo emergencia cruzamento 3 e 4\nDigite 5 para desligar modo emergencia cruzamento 3 e 4: ')
-        
+print('Digite 0 para ligar modo noturno\nDigite 1 para desligar modo noturno')
+print('Digite 2 para ligar modo emergencia cruzamento 1 e 2\nDigite 3 para desligar modo emergencia cruzamento 1 e 2')
+print('Digite 4 para ligar modo emergencia cruzamento 3 e 4\nDigite 5 para desligar modo emergencia cruzamento 3 e 4')
+print('Digite 6 para mostra as informacoes dos cruzamentos\Digite 7 para não mostra as informacoes dos cruzamentos: ')      
+
 start()

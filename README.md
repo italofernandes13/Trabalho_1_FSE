@@ -58,20 +58,36 @@ cd Trabalho_1_FSE
 ```
 scp -P 13508 -r "<insira/seu/caminho/ate/Trabalho_1_FSE>" <user_>@<000.00.00.00>:/home/<user_>
 ```
+exemplo:
+```
+scp -P 13508 -r ~/Downloads/Trabalho_1_FSE italoserra@164.41.98.17:/home/italoserra
+```
 
 4) Copie a pasta para a segunda placa rasp inserindo seu user no lugar de <user_>, seu caminho ao inves de <insira/seu/caminho/ate/Trabalho_1_FSE> e o IP ao inves de <000.00.00.00>:
 ```
 scp -P 13508 -r "<insira/seu/caminho/ate/Trabalho_1_FSE>" <user_>@<000.00.00.00>:/home/<user_>
 ```
+exemplo:
+```
+scp -P 13508 -r ~/Downloads/Trabalho_1_FSE italoserra@164.41.98.17:/home/italoserra
+```
 
-5) Abrir **3 terminais** e em todos acessar via ssh a primeira placa rasp inserindo seu user no lugar de <user_> e o IP ao inves de <000.00.00.00>:
+5) Abrir **3 terminais** e neles acessar via ssh a primeira placa rasp inserindo seu user no lugar de <user_> e o IP ao inves de <000.00.00.00>:
 ```
 ssh <user_>@<000.00.00.00> -p 13508
 ```
+exemplo:
+```
+ssh italoserra@164.41.98.17 -p 13508
+```
 
-6) Abrir **2 terminais** e em todos acessar via ssh a segunda placa rasp inserindo seu user no lugar de <user_> e o IP ao inves de <000.00.00.00>:
+6) Abrir **2 terminais** e neles acessar via ssh a segunda placa rasp inserindo seu user no lugar de <user_> e o IP ao inves de <000.00.00.00>:
 ```
 ssh <user_>@<000.00.00.00> -p 13508
+```
+exemplo:
+```
+ssh italoserra@164.41.98.17 -p 13508
 ```
 
 7) Após abrir e acessar via ssh nos **5 terminais**:<br>
@@ -79,50 +95,49 @@ ssh <user_>@<000.00.00.00> -p 13508
     ```
     python3 server.py <000.00.00.00>
     ```
+    exemplo:
+    ```
+    python3 server.py 164.41.98.17
+    ```
 
     - 7.2. No segundo terminal abra o servidor distribuído, correspondente ao cruzamento 1, e inserindo seu IP ao inves de <000.00.00.00>:
     ```
     python3 client.py 1 <000.00.00.00>
     ```
+    exemplo:
+    ```
+    python3 client.py 1 164.41.98.17
+    ```
     
-    - 7.3. No primeiro terminal abra o servidor distribuído, correspondente ao cruzamento 2, e inserindo seu IP ao inves de <000.00.00.00>:
+    - 7.3. No terceiro terminal abra o servidor distribuído, correspondente ao cruzamento 2, e inserindo seu IP ao inves de <000.00.00.00>:
     ```
     python3 client.py 2 <000.00.00.00>
     ```
+    exemplo:
+    ```
+    python3 client.py 2 164.41.98.17
+    ```
     
-    - 7.4. No primeiro terminal abra o servidor distribuído, correspondente ao cruzamento 3, e inserindo seu IP ao inves de <000.00.00.00>:
+    - 7.4. No quarto terminal abra o servidor distribuído, correspondente ao cruzamento 3, e inserindo seu IP ao inves de <000.00.00.00>:
     ```
     python3 client.py 3 <000.00.00.00>
     ```
+    exemplo:
+    ```
+    python3 client.py 3 164.41.98.17
+    ```
     
-    - 7.5. No primeiro terminal abra o servidor distribuído, correspondente ao cruzamento 4, e inserindo seu IP ao inves de <000.00.00.00>:
+    - 7.5. No quinto terminal abra o servidor distribuído, correspondente ao cruzamento 4, e inserindo seu IP ao inves de <000.00.00.00>:
     ```
     python3 client.py 4 <000.00.00.00>
     ```
-8) No primeiro terminal onde está abriu o servidor central:
-    - 8.1. Para ligar o modo noturno digite:
+    exemplo:
     ```
-    0
+    python3 client.py 4 164.41.98.17
     ```
-    - 8.2. Para desligar o modo noturno digite: 
-    ```
-    1
-    ```
-    - 8.3. Para ligar o modo emergencia no cruzamento 1 e 2 digite: 
-    ```
-    2
-    ```
-    - 8.4. Para desligar o modo emergencia no cruzamento 1 e 2 digite: 
-    ```
-    3
-    ```
-    - 8.5. Para ligar o modo emergencia no cruzamento 3 e 4 digite: 
-    ```
-    4
-    ```
-    - 8.6. Para desligar o modo emergencia no cruzamento 3 e 4 digite: 
-    ```
-    5
-    ```
+
 9) Para terminar a execução pressione **CONTROL+C** duas vezes em cada terminal
+
+## Observações 
+Não implentado os Buzzers (por não conseguir acessar os .mp3) e os botões "PARACARRO" (por não conseguir receber notificação quando havia mudanças de estados)
 
