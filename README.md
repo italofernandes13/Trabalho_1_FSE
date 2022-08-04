@@ -40,7 +40,7 @@ Os **servidores distribuídos** tem as seguintes responsabilidades:
 - time <br>
 
 ## Uso 
-**Para executar o programa é necessário seguir a informações a seguir**
+**Para executar o programa é necessário seguir a ordem das informações a seguir**
 
 Siga as instruções a seguir :
 
@@ -50,54 +50,54 @@ git clone https://github.com/italofernandes13/Trabalho_1_FSE.git
 ```
 
 2) Acessar a pasta da aplicação:
-```sh 
+```sh
 cd Trabalho_1_FSE
 ```
 
-3) Copie a pasta para placa rasp43 inserindo seu user no lugar de <user_> e seu caminho ao inves de <insira/seu/caminho/ate/Trabalho_1_FSE>:
+3) Copie a pasta para a primeira placa rasp inserindo seu user no lugar de <user_>, seu caminho ao inves de <insira/seu/caminho/ate/Trabalho_1_FSE> e o IP ao inves de <000.00.00.00>:
 ```
-scp -P 13508 -r "<insira/seu/caminho/ate/Trabalho_1_FSE>" <user_>@164.41.98.17:/home/<user_>
-```
-
-4) Copie a pasta para placa rasp44 inserindo seu user no lugar de <user_> e seu caminho ao inves de <insira/seu/caminho/ate/Trabalho_1_FSE>:
-```
-scp -P 13508 -r "<insira/seu/caminho/ate/Trabalho_1_FSE>" <user_>@164.41.98.26:/home/<user_>
+scp -P 13508 -r "<insira/seu/caminho/ate/Trabalho_1_FSE>" <user_>@<000.00.00.00>:/home/<user_>
 ```
 
-5) Abrir **3 terminais** e em todos acessar via ssh a placa rasp43 inserindo seu user no lugar de <user_>:
+4) Copie a pasta para a segunda placa rasp inserindo seu user no lugar de <user_>, seu caminho ao inves de <insira/seu/caminho/ate/Trabalho_1_FSE> e o IP ao inves de <000.00.00.00>:
 ```
-ssh <user_>@164.41.98.17 -p 13508
+scp -P 13508 -r "<insira/seu/caminho/ate/Trabalho_1_FSE>" <user_>@<000.00.00.00>:/home/<user_>
 ```
 
-6) Abrir **2 terminais** e em todos acessar via ssh a placa rasp44 inserindo seu user no lugar de <user_>:
+5) Abrir **3 terminais** e em todos acessar via ssh a primeira placa rasp inserindo seu user no lugar de <user_> e o IP ao inves de <000.00.00.00>:
 ```
-ssh <user_>@164.41.98.26 -p 13508
+ssh <user_>@<000.00.00.00> -p 13508
+```
+
+6) Abrir **2 terminais** e em todos acessar via ssh a segunda placa rasp inserindo seu user no lugar de <user_> e o IP ao inves de <000.00.00.00>:
+```
+ssh <user_>@<000.00.00.00> -p 13508
 ```
 
 7) Após abrir e acessar via ssh nos **5 terminais**:<br>
-    - 7.1. No primeiro terminal abra o servidor central:
+    - 7.1. No primeiro terminal abra o servidor central, e inserindo seu IP ao inves de <000.00.00.00>:
     ```
-    python3 server.py
+    python3 server.py <000.00.00.00>
     ```
 
-    - 7.2. No segundo terminal abra o servidor distribuído:
+    - 7.2. No segundo terminal abra o servidor distribuído, correspondente ao cruzamento 1, e inserindo seu IP ao inves de <000.00.00.00>:
     ```
-    python3 client.py 1
-    ```
-    
-    - 7.3. No primeiro terminal abra o servidor distribuído:
-    ```
-    python3 client.py 2
+    python3 client.py 1 <000.00.00.00>
     ```
     
-    - 7.4. No primeiro terminal abra o servidor distribuído:
+    - 7.3. No primeiro terminal abra o servidor distribuído, correspondente ao cruzamento 2, e inserindo seu IP ao inves de <000.00.00.00>:
     ```
-    python3 client.py 3
+    python3 client.py 2 <000.00.00.00>
     ```
     
-    - 7.5. No primeiro terminal abra o servidor distribuído:
+    - 7.4. No primeiro terminal abra o servidor distribuído, correspondente ao cruzamento 3, e inserindo seu IP ao inves de <000.00.00.00>:
     ```
-    python3 client.py 4
+    python3 client.py 3 <000.00.00.00>
+    ```
+    
+    - 7.5. No primeiro terminal abra o servidor distribuído, correspondente ao cruzamento 4, e inserindo seu IP ao inves de <000.00.00.00>:
+    ```
+    python3 client.py 4 <000.00.00.00>
     ```
 8) No primeiro terminal onde está abriu o servidor central:
     - 8.1. Para ligar o modo noturno digite:
@@ -125,5 +125,4 @@ ssh <user_>@164.41.98.26 -p 13508
     5
     ```
 9) Para terminar a execução pressione **CONTROL+C** duas vezes em cada terminal
-
 
