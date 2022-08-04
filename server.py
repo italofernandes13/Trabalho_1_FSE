@@ -1,80 +1,93 @@
-import socket
-import time
-import sys
-from multa import qtd_infracao_avanco, qtd_infracao_velocidade, qtd_media_via, qtd_carro_min
-from main import main
-from estado import noturno_liga, noturno_desliga, emergencia_liga, emergencia_desliga
+import socket 
 import threading
+import sys
 
 HEADER = 128
 PORT = 10211
 SERVER = sys.argv[-1]
 # SERVER = "192.168.1.129"            ## 43
 # SERVER = "192.168.1.146"            ## 44
+ADDR = (SERVER, PORT)
 FORMAT = 'utf-8'
 DISCONNECT_MESSAGE = "!DISCONNECT"
-ADDR = (SERVER, PORT)
+cruzamentos = []
+count_cruzamentos = 0
 
-# client = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-client = socket.socket()
-client.connect(ADDR)
+# server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+server = socket.socket()
+server.bind(ADDR)
 
-def recive():    
+def noturno(n):
+    global cruzamentos
+    global count_cruzamentos
+    for i in range(count_cruzamentos):
+        cruzamentos[i].sendall(f"{n}".encode(FORMAT))
+
+def emergencia_1(n):
+    global cruzamentos
+    global count_cruzamentos
+    for i in range(count_cruzamentos):
+        cruzamentos[i].sendall(f"{n}".encode(FORMAT))
+        if i == 1:
+            break
+
+def emergencia_2(n):
+    global cruzamentos
+    global count_cruzamentos
+    for i in range(count_cruzamentos):
+        if i == 0 or i == 1:
+            pass
+        else:
+            cruzamentos[i].sendall(f"{n}".encode(FORMAT))
+
+def send_handle_client(conn, addr):
     while True:
+        entrada = input()
+        if entrada == '0' or entrada == '1':
+            noturno(entrada)
+        elif entrada == '2' or entrada == '3':
+            emergencia_1(entrada)
+        elif entrada == '4' or entrada == '5':
+            emergencia_2(entrada)
+
+
+def handle_client(conn, addr):
+    # print(f"[NEW CONNECTION] {addr} connected.")
+
+    connected = True
+    while connected:
+
+        msg_length = conn.recv(HEADER).decode(FORMAT)
+        if msg_length:
+            msg_length = int(msg_length)
+            msg = conn.recv(msg_length).decode(FORMAT)
+            if msg == DISCONNECT_MESSAGE:
+                connected = False
+
+            print(f"{msg}")
+            # print(f"[{addr}] {msg}")
+            # conn.send("Msg received".encode(FORMAT))
+
+    conn.close()
         
-        msg = (client.recv(2048).decode(FORMAT))
-        print(f"msg: {msg}")
-        if msg == '0':
-            noturno_liga()
-        elif msg == '1':
-            noturno_desliga()
 
-        elif msg == '2' and (sys.argv[1] == '1' or sys.argv[1] == '2'):
-            emergencia_liga()
-        elif msg == '3' and (sys.argv[1] == '1' or sys.argv[1] == '2'):
-            emergencia_desliga()
-
-        elif msg == '4' and (sys.argv[1] == '3' or sys.argv[1] == '4'):
-            emergencia_liga()
-        elif msg == '5' and (sys.argv[1] == '3' or sys.argv[1] == '4'):
-            emergencia_desliga()
-
-
-def send(msg):
-    message = msg.encode(FORMAT)
-    msg_length = len(message)
-    send_length = str(msg_length).encode(FORMAT)
-    send_length += b' ' * (HEADER - len(send_length))
-    client.send(send_length)
-    client.send(message)
+def start():
+    server.listen(5)
+    # print(f"[LISTENING] Server is listening on {SERVER} port: {PORT}")
+    global cruzamentos
+    global count_cruzamentos
+    while True:
+        conn, addr = server.accept()
+        count_cruzamentos += 1
+        cruzamentos.append(conn)
+        thread_send = threading.Thread(target=handle_client, args=(conn, addr))
+        thread_send.start()
+        thread_recv = threading.Thread(target=send_handle_client, args=(conn, addr))
+        thread_recv.start()
+        # print(f"[ACTIVE CONNECTIONS] {threading.activeCount - 1}")
 
 
-def informacoes():
-    cruzamento = 0
-    
-    if sys.argv[1] == '1' or sys.argv[1] == '3':
-        cruzamento = 1
-        # print('entrou 1 ou 3', ADDR)
-    elif sys.argv[1] == '2' or sys.argv[1] == '4':
-        cruzamento = 2
-        # print('entrou 2 ou 4', ADDR)
-
-    msg = True
-    tempo = time.perf_counter()
-    main(cruzamento)
-    while msg:
-        send("=============")
-        send(f"CRUZAMENTO {sys.argv[1]}")
-        send(f"Fluxo de trânsito nas via principal: {qtd_carro_min(tempo)}Carros/min")
-        send(f"Fluxo de trânsito nas via principal: {qtd_media_via()}km/h")
-        send(f"Número de infrações por avanço de sinal: {qtd_infracao_avanco()}")
-        send(f"Número de infrações por velocidade acima da permitida: {qtd_infracao_velocidade()}")
-        send("=============")
-        time.sleep(10)
-
-    
-
-thread_send = threading.Thread(target=informacoes, args=())
-thread_send.start()
-thread_recv = threading.Thread(target=recive, args=())
-thread_recv.start()
+# print("[STARTING] server is starting...")
+print('Digite 0 para ligar modo noturno\nDigite 1 para desligar modo noturno\nDigite 2 para ligar modo emergencia cruzamento 1 e 2\nDigite 3 para desligar modo emergencia cruzamento 1 e 2\nDigite 4 para ligar modo emergencia cruzamento 3 e 4\nDigite 5 para desligar modo emergencia cruzamento 3 e 4: ')
+        
+start()
